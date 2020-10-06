@@ -29,7 +29,7 @@ class News(object):
 
                 guid = item.guid.text if item.guid is not None else item.link.text
                 news_item = {'guid': guid}
-
+                
                 title = clean_title(item.title.text)
                 published = False
 
@@ -40,9 +40,11 @@ class News(object):
                     if simplynews.text is None:
                         continue
 
-                    simplynews.published_date = item.pubDate.text if simplynews.published_date is None else simplynews.published_date
+                    if len(simplynews.text) < self.url.get('wordCount'):
+                        continue
 
-                    spinrewritter = SpinRewriter()
+                    simplynews.published_date = item.pubDate.text if simplynews.published_date is None else simplynews.published_date
+                    spinrewritter = SpinRewriter() 
                     format_text = {
                         'title': title, 'text': simplynews.text, 'desc': simplynews.desc}
                     text = "{title} || {text} || {desc}".format(**format_text)

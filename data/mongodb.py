@@ -9,7 +9,7 @@ class Connection:
     def __init__(self):
         config = ConfigParser()
         config.read('config.ini')
-        self.conn = str(config['DEFAULT']['connection_string'])
+        self.conn = str(config['MONGODB']['connection_string'])
         self.client = MongoClient(
             self.conn, ssl=True, ssl_cert_reqs=ssl.CERT_NONE)
         self.db = self.client.ContentorDb

@@ -1,6 +1,7 @@
 import simplejson as json
 from collections import namedtuple
 from spin_rewriter import exceptions as ex
+from configparser import ConfigParser
 import requests
 import re
 import json
@@ -382,8 +383,10 @@ class SpinRewriter(object):
     """A facade for easier usage of the raw Spin Rewriter API."""
 
     def __init__(self):
-        self.email_address = 'info@katacc.co.uk'
-        self.api_key = '97cf48d#cbb77ea_e5e1040?3fbcbf3'
+        config = ConfigParser()
+        config.read('config.ini')
+        self.email_address = str(config['SPINREWRITER']['email_address'])
+        self.api_key = str(config['SPINREWRITER']['api_key'])
         self.api = Api(self.email_address, self.api_key)
 
     def unique_variation(
