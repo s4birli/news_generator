@@ -3,7 +3,7 @@ from wordpress_xmlrpc import Client, WordPressPost
 from wordpress_xmlrpc.compat import xmlrpc_client
 from wordpress_xmlrpc.methods import media, posts
 from word_press import WordPress
-from simply_news.scraper import get_image
+from news.scraper import get_image
 from datetime import date
 from PIL import Image
 import os

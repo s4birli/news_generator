@@ -1,9 +1,9 @@
-from simply_news.news_generator import News
+from news.news_generator import News
 from data.mongodb import db
 from image.remove import remove_images
 from bson import ObjectId
 import simplejson as json
-import simply_news
+import news
 import time
 import random
 
