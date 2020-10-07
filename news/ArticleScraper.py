@@ -1,4 +1,4 @@
-from newspaper import Article, fulltext
+from newspaper import Article, fulltext, build
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -14,15 +14,23 @@ def get_article(url, language='en'):
         try:
             article.nlp()
         except Exception as e:
-            print(e)
             pass
+
         if article.summary is None or len(article.summary) is 0:
             article.summary = article.meta_description if len(
                 article.meta_description) > 0 else article.text[:150]
 
         return article
     except Exception as e:
-        raise Exception('')
+        return None
+
+
+def get_articles(url, language='en'):
+    builed_articles = build(url)
+    for article in builed_articles.articles:
+        print(article.url)
+
+    return builed_articles.articles
 
 
 def get_html(url):

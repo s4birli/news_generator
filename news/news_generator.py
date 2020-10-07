@@ -15,12 +15,11 @@ class News(object):
         self.request = req
 
     def scrab(self):
-        items = get_response(
-            self.request['url'], 'xml').findAll('item')[0:10]
+        items = get_response(self.request['url'], 'xml').findAll('item')
 
         published_item = 0
         for item in items:
-            if published_item > 4:
+            if published_item > 0:
                 break
 
             try:
@@ -29,7 +28,7 @@ class News(object):
 
                 guid = item.guid.text if item.guid is not None else item.link.text
                 news_item = {'guid': guid}
-                
+
                 title = clean_title(item.title.text)
                 published = False
 
@@ -37,14 +36,15 @@ class News(object):
                     news_item['urlId'] = self.url.get('_id')
                     simplynews = SimplyNews(item.link.text, 'en')
                     simplynews.cleaned_news()
-                    if simplynews.text is None:
+
+                    if len(simplynews.text) == 0:
                         continue
 
-                    if len(simplynews.text) < self.url.get('wordCount'):
+                    if print(len(simplynews.text.split())) < self.url.get('wordCount'):
                         continue
 
                     simplynews.published_date = item.pubDate.text if simplynews.published_date is None else simplynews.published_date
-                    spinrewritter = SpinRewriter() 
+                    spinrewritter = SpinRewriter()
                     format_text = {
                         'title': title, 'text': simplynews.text, 'desc': simplynews.desc}
                     text = "{title} || {text} || {desc}".format(**format_text)
@@ -75,7 +75,7 @@ class News(object):
                     news_item['isPublished'] = False
                     news_item['keywords'] = simplynews.keywords
                     news_item['spinnedText'] = add_internal_link(
-                        self.url, self.request, simplynews.text)
+                        self.url, self.request, simplynews.text, title)
 
                     _news_item = db().add_request_items(news_item)
                     published = WordPress.WordPress(
@@ -94,7 +94,7 @@ class News(object):
 
                     published_item += 1
 
-                    r = random.randrange(63, 113)
+                    r = random.randrange(32, 68)
                     time.sleep(r)
 
             except Exception as e:

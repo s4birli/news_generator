@@ -88,6 +88,7 @@ class WordPress(object):
             post.terms_names = {'post_tag': news_item.get(
                 'keywords'), 'category': news_item.get('category')}
             post.post_status = 'publish'
+
             if attachment is not None:
                 post.thumbnail = attachment['id']
 

@@ -11,6 +11,7 @@ import uuid
 import mimetypes
 import time
 import pathlib
+from urllib.parse import urlparse
 
 
 def upload_image(url, news_item):
@@ -18,10 +19,14 @@ def upload_image(url, news_item):
         image_url = news_item['image_url']
         uuid_txt = str(uuid.uuid1()).replace("-", "").upper()
 
+        # get extantion
+        _url = list(urlparse(news_item['image_url']))
+        base_img_url = "{}://{}{}".format(_url[0], _url[1], _url[2])
+
         # Download File
-        img_data = get_image(news_item['image_url'])
+        img_data = get_image(image_url)
         file_name = "{}.{}".format(
-            uuid_txt, image_url.split('/')[-1].split('.')[1])
+            uuid_txt, base_img_url.split('/')[-1].split('.')[1])
         file_path = "{}/{}".format(pathlib.Path().absolute(), file_name)
         with open(file_path, 'wb') as handler:
             handler.write(img_data.content)

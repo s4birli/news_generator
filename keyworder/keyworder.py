@@ -58,18 +58,19 @@ def get_mostCommon(text1, text2):
     return return_item
 
 
-def add_internal_link(url, request, text):
+def add_internal_link(url, request, text, title):
     try:
         previous_post = get_post(url, request)
-        if previous_post is None:
-            return None
-
-        title = previous_post.title
+        title = previous_post.title if previous_post else title
         search_text = get_mostCommon(title, text)
         original_text = text
-        replace_text = '<a href="{}" target="_self">{}</a>'.format(
-            previous_post.link, search_text)
-        return re.sub(search_text, replace_text, original_text, 1)
+
+        if previous_post:
+            replace_text = '<a href="{}" target="_self">{}</a>'.format(previous_post.link, search_text)
+            return re.sub(search_text, replace_text, original_text, 1)
+        else:
+            return original_text
+            
     except Exception as e:
         print(e)
         return None

@@ -42,6 +42,9 @@ class SimplyNews(object):
         """
         article = ArticleScraper.get_article(self.url, self.language)
 
+        if article is None:
+            return None
+
         self.original_text = article.text
         self.original_html = article.article_html
         self.keywords = article.keywords
@@ -75,6 +78,9 @@ class SimplyNews(object):
         """
         article = ArticleScraper.get_article(self.url, self.language)
 
+        if article is None:
+            return None
+
         self.original_text = article.text
         self.original_html = article.article_html
         self.keywords = article.keywords
@@ -106,6 +112,9 @@ class SimplyNews(object):
         self.authors = []
         """
         article = ArticleScraper.get_article(self.url, self.language)
+
+        if article is None:
+            return None
 
         self.original_text = article.text
         self.original_html = article.article_html
